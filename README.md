@@ -14,7 +14,8 @@ The objective of this project is to build a hybrid ML architecture that eradicat
 
 We processed massive, highly imbalanced network flow datasets containing Benign traffic, Botnet beaconing, and stealthy Infiltration attacks. 
 
-* **Distributed Data Engineering (PySpark):** * Ingested and processed gigabytes of Parquet files using PySpark.
+* **Distributed Data Engineering (PySpark):**
+  * Ingested and processed gigabytes of Parquet files using PySpark.
   * Extracted an isolated, scientifically orthogonal core of 8 behavioral features and raw TCP flags to prevent collinearity noise and data leakage.
   * **Temporal Engineering:** Built 60-second rolling windows partitioned by Destination Port to mathematically capture "Campaign Bursts" and sequential attacker density, proving that stealthy attacks are invisible at the single-packet level.
 
