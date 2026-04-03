@@ -1,43 +1,49 @@
-# 🛡️ Hybrid Cyber Threat Detection: Hunting Stealth Infiltration & Botnets
+# 🛡️ Cyber Threat Analysis: Uncovering Stealth Infiltration vs. Automated Botnets
 
 ## 📑 Executive Summary
-This project develops a machine learning pipeline designed to improve alert fidelity in Security Operations Centers (SOCs). 
+This data analysis project investigates massive network telemetry to solve a critical challenge in Security Operations Centers (SOCs): analyst alert fatigue. 
 
-By processing imbalanced network telemetry, the project addresses the inherent complexity of modern threat landscapes, where automated botnets and stealthy human-driven infiltrations present completely opposing behavioral signatures. 
+Through Exploratory Data Analysis (EDA), we identified a fundamental contradiction in threat behavior: automated botnets rely on rigid timing, while human-driven infiltrations actively mimic normal data volume. 
 
-Using PySpark for temporal feature engineering, a Deep Learning Autoencoder for timing analysis, and a Cascading LightGBM classifier, the system isolates automated botnets and increases the detection precision of stealthy Infiltration attacks from a 4% baseline to 43%. 
+Using PySpark and Machine Learning (Autoencoders, LightGBM) as our analytical engines, we validated this hypothesis, ultimately increasing infiltration detection precision from a 4% baseline to 43%. 
 
-The repository includes full exploratory analysis, model benchmarking, and actionable operational recommendations.
+This repository details the full analytical process, from initial EDA to the extraction of actionable, rule-based recommendations for security stakeholders.
 
 ---
 
 ## 📌 Project Overview
 
-### 💼 The Business Problem
-Security Operations Centers (SOCs) frequently manage high volumes of false-positive alerts. 
+### 💼 The Analytical Problem & Business Objective
+Security Operations Centers (SOCs) are overwhelmed by false-positive alerts. 
 
-The root of this problem lies in the bifurcated nature of network anomalies: high-volume, automated Botnets create massive noise through rigid beaconing, while low-volume Infiltration attacks actively mimic normal human network behavior. This structural contradiction makes flat, single-model threat detection highly ineffective. 
+The root of this problem is analytical: legacy systems treat all "anomalies" as the same. 
 
-The objective of this project is to build a hierarchical ML architecture capable of addressing both opposing threat profiles, improving the detection of stealthy Infiltration traffic while keeping false positives manageable for security analysts.
+However, our initial analysis revealed a bifurcated threat landscape:
+1. **The Rigidity Paradox:** Botnets create massive noise through rigid, robotic beaconing.
+2. **The Mimicry Trap:** Stealthy Infiltration attacks actively mimic normal human network volume to evade standard spatial filters.
 
-### 📂 Data Sources & Preprocessing
-We processed highly imbalanced network flow datasets containing Benign traffic, Botnet beaconing, and Infiltration attacks. 
-* **Data Engineering (PySpark):** Ingested Parquet files and extracted an isolated core of 8 behavioral features and raw TCP flags to prevent data leakage.
-* **Temporal Engineering:** Engineered 60-second rolling windows partitioned by Destination Port to capture connection density over time, based on the finding that stealthy attacks are difficult to detect at the single-packet level.
+**The Objective:** To conduct a rigorous data analysis that separates these opposing threat profiles, identify the true behavioral drivers of stealth infiltration, and provide SOC management with data-backed recommendations to improve alert fidelity.
 
-### 🛠️ Methodology & Machine Learning Approach
-* **Feature Extraction (Autoencoder):** Trained a 3-feature Deep Neural Network Autoencoder strictly on timing sequences to create a `Timing_Anomaly_Score`, avoiding payload volume data to prevent mimicry.
-* **Cascading Supervised Architecture:** * **Stage 1:** An initial XGBoost model focused exclusively on isolating rigid botnet beaconing.
-  * **Stage 2:** A LightGBM classifier analyzing the remaining traffic, utilizing leaf-wise tree growth and a tuned `scale_pos_weight` parameter to address the 4% minority class (Infiltration).
-* **Explainable AI (XAI):** Applied SHAP to deconstruct the final LightGBM model, ensuring the features driving the predictions are transparent.
+### 📂 Data Sources & Analytical Preprocessing
+We analyzed a highly imbalanced network flow dataset containing Benign traffic, Botnet beaconing, and Infiltration attacks. 
+* **Data Engineering (AWS & PySpark):** Ingested Parquet files and extracted an isolated core of 8 behavioral features and 6 raw TCP flags to ensure our analysis was free of collinearity noise.
+* **Temporal Aggregation:** Because our EDA proved that stealthy attacks are invisible at the single-packet level, we engineered 60-second rolling windows to analyze connection density over time.
 
-### 📊 Key Insights & Recommendations
-* **Alert Fidelity Improvement:** The tuned LightGBM architecture achieved a Precision of 0.43 and a Recall of 0.54 for Infiltration attacks. This provides a 10x predictive lift over the baseline probability, helping focus analyst attention on higher-confidence alerts.
-* **Actionable TCP Intelligence:** SHAP analysis revealed that high `RST Flag Cnt` combined with temporal density are strong indicators of compromise. 
-* **Operational Recommendation:** SOC teams should convert these SHAP insights into static, computationally inexpensive firewall rules (e.g., rate-limiting RST flags per minute) while using the heavier ML pipeline for retroactive, offline threat hunting.
+### 🛠️ Analytical Methodology & ML Integration
+We utilized machine learning not as a black-box product, but as an analytical tool to test our behavioral hypotheses:
+* **Unsupervised Analysis (Autoencoder):** We trained a neural network strictly on timing sequences. This confirmed that while timing anomalies easily expose Botnets, Infiltration traffic mathematically overlaps with normal human timing, requiring a different analytical approach.
+* **Predictive Analysis (LightGBM):** We deployed a Cascading LightGBM classifier. By utilizing its leaf-wise tree growth, we successfully drilled into the 4% minority class (Infiltration) to test our engineered temporal features.
+* **Interpretative Analysis (SHAP):** We applied Game Theory (SHAP) to deconstruct the ML model, translating complex mathematical predictions back into readable behavioral insights.
 
-### ⚠️ Operational Limitations & Trade-offs
-To maintain transparency, it is important to acknowledge the deployment realities of this architecture:
-* **Infrastructure Latency:** Reliance on 60-second rolling temporal windows introduces a latency floor. **Mitigation:** Deploy Apache Kafka & Flink for real-time streaming, accepting higher infrastructure costs.
-* **Compute & Memory Scaling:** Using `.toPandas()` for LightGBM training creates Out-Of-Memory (OOM) risks on large-scale data. **Mitigation:** Transition the final classifier to a fully distributed framework (e.g., SynapseML) for cluster-wide scalability.
-* **Adversarial Evasion:** Advanced actors could bypass the Autoencoder by injecting random "jitter" into their malware. **Mitigation:** Utilize adversarial training by injecting synthetic noise into the baseline data.
+### 📊 Key Findings & Business Recommendations
+Our analysis yielded the following data-driven insights and operational recommendations:
+
+* **Alert Fidelity Improvement:** The integration of temporal density features increased Infiltration detection precision to 0.43 (with 0.54 Recall)—a 10x predictive lift over the baseline probability.
+* **The "Reset" Indicator:** SHAP analysis revealed that an abnormally high `RST Flag Cnt` combined with high temporal density is the strongest indicator of a stealth compromise.
+* **Operational Recommendation:** Do not rely solely on the ML model in real-time. SOC teams should convert these analytical insights into static, computationally inexpensive firewall rules (e.g., rate-limiting RST flags per 60-second window) to secure immediate, low-cost protection, while reserving the pipeline for offline retroactive threat hunting.
+
+### ⚠️ Analytical Limitations & Trade-offs
+To ensure data integrity and stakeholder trust, we must acknowledge the limitations of this analysis:
+* **Infrastructure Latency:** The reliance on 60-second rolling temporal windows introduces a latency floor. Deploying this logic in real-time requires heavy streaming infrastructure (e.g., Apache Flink).
+* **Compute Constraints:** Using `.toPandas()` for LightGBM training creates Out-Of-Memory (OOM) risks on large-scale data, requiring a shift to distributed frameworks (SynapseML) for enterprise scaling.
+* **Adversarial Adaptation:** Advanced actors who study this analysis could bypass the timing filters by injecting random "jitter" into their malware, requiring future analysis to focus on adversarial noise injection.synthetic noise into the baseline data.
