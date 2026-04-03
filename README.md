@@ -1,7 +1,13 @@
 # 🛡️ Hybrid Cyber Threat Detection: Hunting Stealth Infiltration & Botnets
 
 ## 📑 Executive Summary
-This project develops a machine learning pipeline designed to improve alert fidelity in Security Operations Centers (SOCs). By processing imbalanced network telemetry, the project addresses the inherent complexity of modern threat landscapes, where automated botnets and stealthy human-driven infiltrations present completely opposing behavioral signatures. Using PySpark for temporal feature engineering, a Deep Learning Autoencoder for timing analysis, and a Cascading LightGBM classifier, the system isolates automated botnets and increases the detection precision of stealthy Infiltration attacks from a 4% baseline to 43%. The repository includes full exploratory analysis, model benchmarking, and actionable operational recommendations.
+This project develops a machine learning pipeline designed to improve alert fidelity in Security Operations Centers (SOCs). 
+
+By processing imbalanced network telemetry, the project addresses the inherent complexity of modern threat landscapes, where automated botnets and stealthy human-driven infiltrations present completely opposing behavioral signatures. 
+
+Using PySpark for temporal feature engineering, a Deep Learning Autoencoder for timing analysis, and a Cascading LightGBM classifier, the system isolates automated botnets and increases the detection precision of stealthy Infiltration attacks from a 4% baseline to 43%. 
+
+The repository includes full exploratory analysis, model benchmarking, and actionable operational recommendations.
 
 ---
 
