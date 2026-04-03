@@ -38,7 +38,7 @@ We utilized machine learning not as a black-box product, but as an analytical to
 ### 📊 Key Findings & Business Recommendations
 Our analysis yielded the following data-driven insights and operational recommendations:
 
-* **Alert Fidelity Improvement:** The integration of temporal density features increased Infiltration detection precision to 0.43 (with 0.54 Recall)—a 10x predictive lift over the baseline probability.
+* **Alert Fidelity Improvement:** The integration of temporal density features increased Infiltration detection precision to 0.43 (with 0.54 Recall) - a 10x predictive lift over the baseline probability.
 * **The "Reset" Indicator:** SHAP analysis revealed that an abnormally high `RST Flag Cnt` combined with high temporal density is the strongest indicator of a stealth compromise.
 * **Operational Recommendation:** Do not rely solely on the ML model in real-time. SOC teams should convert these analytical insights into static, computationally inexpensive firewall rules (e.g., rate-limiting RST flags per 60-second window) to secure immediate, low-cost protection, while reserving the pipeline for offline retroactive threat hunting.
 
