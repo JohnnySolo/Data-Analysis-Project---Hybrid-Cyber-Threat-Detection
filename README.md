@@ -14,7 +14,11 @@ The repository includes full exploratory analysis, model benchmarking, and actio
 ## 📌 Project Overview
 
 ### 💼 The Business Problem
-Security Operations Centers (SOCs) frequently manage high volumes of false-positive alerts. The root of this problem lies in the bifurcated nature of network anomalies: high-volume, automated Botnets create massive noise through rigid beaconing, while low-volume Infiltration attacks actively mimic normal human network behavior. This structural contradiction makes flat, single-model threat detection highly ineffective. The objective of this project is to build a hierarchical ML architecture capable of addressing both opposing threat profiles, improving the detection of stealthy Infiltration traffic while keeping false positives manageable for security analysts.
+Security Operations Centers (SOCs) frequently manage high volumes of false-positive alerts. 
+
+The root of this problem lies in the bifurcated nature of network anomalies: high-volume, automated Botnets create massive noise through rigid beaconing, while low-volume Infiltration attacks actively mimic normal human network behavior. This structural contradiction makes flat, single-model threat detection highly ineffective. 
+
+The objective of this project is to build a hierarchical ML architecture capable of addressing both opposing threat profiles, improving the detection of stealthy Infiltration traffic while keeping false positives manageable for security analysts.
 
 ### 📂 Data Sources & Preprocessing
 We processed highly imbalanced network flow datasets containing Benign traffic, Botnet beaconing, and Infiltration attacks. 
